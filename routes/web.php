@@ -70,3 +70,8 @@ $router->get('/deconnecter', [
     'uses' => 'DemandeController@deconnexion',
     'middleware' => 'admin-auth'
 ]); 
+
+$router->delete('/stagiaire/{stagiaireId}', [
+    'as' => 'stagiaire.delete',
+    'uses' => 'StagiaireController@delete'
+]);

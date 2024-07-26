@@ -12,7 +12,9 @@
 </head>
 
 <body class="antialised bg-gray-50">
-    @yield('content')
+    <div class="px-4">
+        @yield('content')
+    </div>
 
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
