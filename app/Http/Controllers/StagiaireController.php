@@ -26,7 +26,7 @@ class StagiaireController {
             })
             ->select('stagiaires.*', 'niveaux.niveau')
             //->get();
-            ->paginate(2);
+            ->paginate(7);
         return view('stagiaires.lister', ['stagiaires' => $stagiaires]);
     }
 
@@ -37,8 +37,9 @@ class StagiaireController {
             ->join('demandes','stagiaires.id','=','demandes.idStagiaire')
             ->join('niveaux','stagiaires.idniveau','=','niveaux.id')
             ->join('entite','entite.id','=','demandes.idEntite')
+            ->join('documents','demandes.id','documents.idDemande')
             ->where('stagiaires.id', '=', $stagiaireId)
-            ->select('stagiaires.*', 'demandes.*', 'niveaux.niveau', 'entite.nom as entiteName')
+            ->select('stagiaires.*', 'demandes.*', 'niveaux.niveau', 'entite.nom as entiteName','documents.filepath')
             ->first();
             
 

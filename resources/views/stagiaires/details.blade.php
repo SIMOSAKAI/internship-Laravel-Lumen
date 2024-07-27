@@ -54,6 +54,16 @@
                         <p class="text-gray-900">{{ $stagiaire->entiteName }}</p>
                     </div>
                 </div>
+                <div class="w-full px-2 mb-4">
+                    <div class="bg-gray-100 rounded-lg p-4">
+                        <p class="text-gray-700 text-sm font-semibold">Télécharger le CV</p>
+                        <p class="text-gray-900">
+                            <a href="{{ url($stagiaire->filepath) }}" class="text-blue-500 underline" download>
+                                CV
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 

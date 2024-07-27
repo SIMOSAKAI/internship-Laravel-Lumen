@@ -122,14 +122,23 @@ class DemandeController extends Controller
 
         return view('stagiaires.acceptees', ['stagiaires' => $stagiaires]);
     }*/
-    public function stagiairesAcceptees()
-    {
+    public function stagiairesAcceptees(Request $request)
+    {   
+        $query = $request->input('query');
         $stagiaires = DB::table('stagiaires')
             ->join('demandes', 'stagiaires.id', '=', 'demandes.idstagiaire')
             ->join('niveaux', 'stagiaires.idniveau', '=', 'niveaux.id')
             ->where('demandes.idstatut', 2) // Statut "Validé"
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where(function ($subQuery) use ($query) {
+                    $subQuery->where('stagiaires.cin', 'like', "%$query%")
+                        ->orWhere('stagiaires.nom', 'like', "%$query%")
+                        ->orWhere('stagiaires.prenom', 'like', "%$query%");
+                });
+            })
             ->select('stagiaires.*', 'niveaux.niveau as niveau')
-            ->get();
+            //->get();
+            ->paginate(2);
 
         return view('stagiaires.acceptees', ['stagiaires' => $stagiaires]);
     }
@@ -146,14 +155,24 @@ class DemandeController extends Controller
         }
     }
 
-    public function stagiairesRefuses()
-    {
+    public function stagiairesRefuses(Request $request)
+    {   
+        $query = $request->input('query');
         $stagiaires = DB::table('stagiaires')
             ->join('demandes', 'stagiaires.id', '=', 'demandes.idstagiaire')
             ->join('niveaux', 'stagiaires.idniveau', '=', 'niveaux.id')
             ->where('demandes.idstatut', 3) // Statut "Refusé"
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where(function ($subQuery) use ($query) {
+                    $subQuery->where('stagiaires.cin', 'like', "%$query%")
+                        ->orWhere('stagiaires.nom', 'like', "%$query%")
+                        ->orWhere('stagiaires.prenom', 'like', "%$query%");
+                });
+            })
             ->select('stagiaires.*', 'niveaux.niveau as niveau')
-            ->get();
+            ->paginate(2);
+            
+            //->get();
 
         return view('stagiaires.refuses', ['stagiaires' => $stagiaires]);
     }
